@@ -1,78 +1,113 @@
-#include <bits/stdc++.h>
-#define dist(x1,y1,x2,y2) std::sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
 using namespace std;
-void drawCircle(int x,int y,int r,int arr[][101],int h ,int w)
-{
-     for(int i=0;i<h;i++)
-        for(int j=0;j<w;j++)
+
+
+int main() {
+    int l,b,n;
+    cin>>l>>b>>n;
+    int  arr[l][b],cp[l][b];
+    for(int i=0;i<l;i++)
+        for(int j=0;j<b;j++)
         {
-            if(dist(i,j,x,y)<=r)
-                arr[i][j]=1;
-        }
-    for(int i=0;i<h;i++)
-    {
-        for(int j=0;j<w;j++)
-        {
-            if(arr[i][j]==0)
-                cout<<".";
+            char temp;
+            cin>>temp;
+            if(temp=='O')
+            {
+                arr[i][j]=2;
+                cp[i][j]=2;
+            }
             else
-                cout<<"#";
+            {
+                arr[i][j]=0;
+                cp[i][j]=0;
+            }
+        }
+   
+    for(int m=1;m<15;m++)
+    {
+        /*if(i%3==0)
+            {
+            for(int i=0;i<l;i++)
+                for(int j=0;j<b;j++)
+                {
+                    if(arr[i][j]>1)
+                        arr[i][j]--;
+                    else if(arr[i][j]==1)
+                    {
+                        arr[i+1][j]=0;
+                        arr[i-1][j]=0;
+                        arr[i][j]=0;
+                        arr[i][j+1]=0;
+                        arr[i][j-1]=0;
+                    }
+                }
+        }*/
+         if((m%2)==1)
+        {                cout<<endl;
+    
+            for(int i=0;i<l;i++)
+                for(int j=0;j<b;j++)
+                {  
+                    if(arr[i][j]==0)
+                        arr[i][j]=3;
+                    else if(arr[i][j]>1)
+                        arr[i][j]--;
+                    else if(arr[i][j]==1)
+                    {
+                        arr[i+1][j]=0;
+                        arr[i-1][j]=0;
+                        arr[i][j]=0;
+                        arr[i][j+1]=0;
+                        arr[i][j-1]=0;
+                    }
+                    
+                }
+        }        
+        else if((m%2)==0)
+        {
+             for(int i=0;i<l;i++)
+                for(int j=0;j<b;j++)
+                {                 
+                    if(arr[i][j]>1)
+                        arr[i][j]--;
+                    else if(arr[i][j]==1)
+                    {
+                        if(arr[i+1][j]!=1&&i+1<l)
+                            arr[i+1][j]=0;
+                        if(arr[i-1][j]!=1&&i-1>=0)
+                            arr[i-1][j]=0;
+                            arr[i][j]=0;
+                        if(arr[i][j+1]!=1&&j+1<b)
+                            arr[i][j+1]=0;
+                        if(arr[i][j-1]!=1&&j-1>=0)
+                            arr[i][j-1]=0; 
+                    }                 
+                }
+        }        
+        for(int i=0;i<l;i++)
+        {
+             for(int j=0;j<b;j++)            
+                 cout<<arr[i][j];
+            cout<<endl;
         }
         cout<<endl;
-    }
-}
-int main(){
-    int w;
-    int h;
-    cin >> w >> h;
-    int circleX;
-    int circleY;
-    int r;
-    cin >> circleX >> circleY >> r;
-    int x1;
-    int y1;
-    int x3;
-    int y3;
-    int arr[101][101];
-    for(int i=0;i<101;i++)
-        for(int j=0;j<101;j++)
-            arr[h][j]=0;
-    cin >> x1 >> y1 >> x3 >> y3;
-    drawCircle(circleY,circleX,r,arr,h,w);
-    //cout<<dist(x1,y1,x3,y3);
+        cout<<endl;
+        bool equal=true;
+        for(int i=0;i<l;i++)
+            for(int j=0;j<b;j++)
+                if(arr[i][j]!=cp[i][j])
+                {
+                    equal=false;
+                    break;
+                }
+        if(equal)
+            cout<<"equal "<<m<<endl;
+        }
+  
+    
     return 0;
 }
-
-
-
-
-You can do this with dot products, and there's no need to find B and D.
-
-If you project the point (call it P) onto the diagonal, then if the distance from the point to the diagonal is less than or equal to the distance from the projected point to the closest corner (A or C) then it's inside the square. This assumes "on the line is in".
-
-First, find out how far away from A the point is in the direction of AC. The value must be positive or else the projected point on the diagonal is outside of the segment between A and C.
-
-bool in_square(Point P, Point A, Point C)
-{
-    float dot1 = ((P.x - A.x) * (C.x - A.x)) + ((P.y - A.y) * (C.y - A.y));
-    if(dot1 < 0.0f)
-        return false;
-
-Next, find out how far away from C the point is in the direction of CA and test likewise:
-
-    float dot2 = ((P.x - C.x) * (A.x - C.x)) + ((P.y - C.y) * (A.y - C.y));
-    if(dot2 < 0.0f)
-        return false;
-
-Now calculate a vector from a point on the diagonal (e.g. A) to the point P, and then take the dot product of it with a vector perpendicular with the diagonal. This gives the distance of P from the diagonal. Compare this distance to the smallest of dot1 and dot2:
-
-    float dot3 = ((P.x - A.x) * (C.y - A.y)) + ((P.y - A.y) * (A.x - C.x));
-    if(dot3 < 0.0f)
-        dot3 = -dot3; // abs value
-    if(dot1 < dot2)
-        return dot3 <= dot1;
-    else
-        return dot3 <= dot2;
-}
-
-There's no need to normalize any of these vectors because we are just doing comparisons and the length of the vectors (AC, CA, perpendicular to AC) is the same each time.
