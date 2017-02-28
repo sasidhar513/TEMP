@@ -4,110 +4,110 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
-
-
+void findSquares(int i,int j,char ** arr,int n,int m)
+{
+    
+        
+        
+}
+bool check(int n,int * arr)
+{   
+        if(arr[n]>=2)
+            return false;
+        else
+            return true;    
+}
 int main() {
-    int l,b,n;
-    cin>>l>>b>>n;
-    int  arr[l][b],cp[l][b];
-    for(int i=0;i<l;i++)
-        for(int j=0;j<b;j++)
+    int n,m;
+    cin>>n>>m;
+    char arr[n][m];
+    char ** arr;
+    int ** check;
+    arr = new char *[n]; 
+    for(int i = 0; i <n; i++)
+    arr[i] = new char[m];
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
         {
-            char temp;
-            cin>>temp;
-            if(temp=='O')
-            {
-                arr[i][j]=2;
-                cp[i][j]=2;
-            }
-            else
-            {
-                arr[i][j]=0;
-                cp[i][j]=0;
-            }
+            cin>>arr[i][j];
         }
+    //findSquares(0,0,ara,n,m);
    
-    for(int m=1;m<15;m++)
+    
+
+    
+    int minA[n];
+    for(int i=0;i<n;i++)
+        minA[i]=0;
+    minA[0]=1;
+    minA[n-1]=1;
+    for(int i=n/2;i<;i++)
     {
-        /*if(i%3==0)
-            {
-            for(int i=0;i<l;i++)
-                for(int j=0;j<b;j++)
-                {
-                    if(arr[i][j]>1)
-                        arr[i][j]--;
-                    else if(arr[i][j]==1)
-                    {
-                        arr[i+1][j]=0;
-                        arr[i-1][j]=0;
-                        arr[i][j]=0;
-                        arr[i][j+1]=0;
-                        arr[i][j-1]=0;
-                    }
-                }
-        }*/
-         if((m%2)==1)
-        {                cout<<endl;
-    
-            for(int i=0;i<l;i++)
-                for(int j=0;j<b;j++)
-                {  
-                    if(arr[i][j]==0)
-                        arr[i][j]=3;
-                    else if(arr[i][j]>1)
-                        arr[i][j]--;
-                    else if(arr[i][j]==1)
-                    {
-                        arr[i+1][j]=0;
-                        arr[i-1][j]=0;
-                        arr[i][j]=0;
-                        arr[i][j+1]=0;
-                        arr[i][j-1]=0;
-                    }
+        if(check(i,minA))
+        {
                     
-                }
-        }        
-        else if((m%2)==0)
-        {
-             for(int i=0;i<l;i++)
-                for(int j=0;j<b;j++)
-                {                 
-                    if(arr[i][j]>1)
-                        arr[i][j]--;
-                    else if(arr[i][j]==1)
-                    {
-                        if(arr[i+1][j]!=1&&i+1<l)
-                            arr[i+1][j]=0;
-                        if(arr[i-1][j]!=1&&i-1>=0)
-                            arr[i-1][j]=0;
-                            arr[i][j]=0;
-                        if(arr[i][j+1]!=1&&j+1<b)
-                            arr[i][j+1]=0;
-                        if(arr[i][j-1]!=1&&j-1>=0)
-                            arr[i][j-1]=0; 
-                    }                 
-                }
-        }        
-        for(int i=0;i<l;i++)
-        {
-             for(int j=0;j<b;j++)            
-                 cout<<arr[i][j];
-            cout<<endl;
-        }
-        cout<<endl;
-        cout<<endl;
-        bool equal=true;
-        for(int i=0;i<l;i++)
-            for(int j=0;j<b;j++)
-                if(arr[i][j]!=cp[i][j])
+            for(int j=0;j<m;j++)
+            {
+                if(arr[i][j]=="G")
                 {
-                    equal=false;
-                    break;
+                    if(check(j,minA))
+                    {
+                        int mini=min(min(min(i,n-i-1),j),m-j-1);
+                        //cout<<"mini "<<mini<<endl;
+                        int left=0,right=0,up=0,down=0;
+                        for(int k=1;k<=mini;k++)
+                        {
+                            //cout<<arr[i][j]<<" "<< arr[i-k][j]<<endl;
+                            if(arr[i][j]==arr[i-k][j])
+                                up++;
+                            else
+                                break;
+                        }
+                        //checking right 
+                        for(int k=1;k<=mini;k++)
+                        {
+                            //cout<<arr[i][j]<<" "<<arr[i+k][j]<<endl;
+                            if(arr[i][j]==arr[i+k][j])
+                                down++;
+                            else 
+                                break;
+                        }
+                        //checking bottom
+                        for(int l=1;l<=mini;l++)
+                        {
+                            //cout<<arr[i][j]<<" "<<arr[i][j+l]<<endl;
+                            if(arr[i][j]==arr[i][j+l])
+                                right++;
+                            else 
+                              break; 
+
+                        }
+                        //cheking up
+                         for(int k=1;k<=mini;k++)
+                        {
+                            //cout<<arr[i][j]<<" "<<arr[i][j-k]<<endl;
+                            if(arr[i][j]==arr[i][j-k])
+                                left++;
+                             else 
+                                 break;
+                        }
+                        int plus=min(up,min(down,min(left,right)));
+                        cout<<i<<" "<<j<<" "<<left<<" "<<right<<" "<<up<<" "<<down<<" "<<plus<<endl;
+                        for(int ss=plus;ss>0;ss--)
+                            if(minA[ss]==0)
+                            {
+                                minA[ss]=1;
+                                minA[n-ss-1]=1;
+                                break;
+                            }
+
+
+                    }
                 }
-        if(equal)
-            cout<<"equal "<<m<<endl;
+
+            }
         }
-  
-    
+        
+    }*/
     return 0;
 }
