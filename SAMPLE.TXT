@@ -20,23 +20,40 @@ bool check(int n,int * arr)
 int main() {
     int n,m;
     cin>>n>>m;
-    char arr[n][m];
+    int plusCounter[min(n/2,m/2)];
+    for(int i=0;i<min(n/2,m/2);i++)
+        plusCounter[i]=0;
+        
     char ** arr;
-    int ** check;
-    arr = new char *[n]; 
+    int ** MaxPlusPossibleArr;
+    arr = new char *[n];
+    MaxPlusPossibleArr=new int *[n];
     for(int i = 0; i <n; i++)
-    arr[i] = new char[m];
+        arr[i] = new char[m];
+    for(int i = 0; i <n; i++)
+        MaxPlusPossibleArr[i] = new int[m];
     for(int i=0;i<n;i++)
+    {
         for(int j=0;j<m;j++)
         {
             cin>>arr[i][j];
+            MaxPlusPossibleArr[i][j]=min(min(min(i,n-i-1),j),m-j-1);
+            cout<<MaxPlusPossibleArr[i][j]<<" ";
         }
+        cout<<endl;
+    }
+    for(int i=min(n/2,m/2);i>=0;i--)
+    {
+        //cout<<i<<endl;
+    }
+    
+    
     //findSquares(0,0,ara,n,m);
    
     
 
+   /* 
     
-    int minA[n];
     for(int i=0;i<n;i++)
         minA[i]=0;
     minA[0]=1;
