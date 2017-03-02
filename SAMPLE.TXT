@@ -4,127 +4,85 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
-void findSquares(int i,int j,char ** arr,int n,int m)
+int main()
 {
-    
-        
-        
-}
-bool check(int n,int * arr)
-{   
-        if(arr[n]>=2)
-            return false;
-        else
-            return true;    
-}
-int main() {
-    int n,m;
+    int m,n;
     cin>>n>>m;
-    int plusCounter[min(n/2,m/2)];
-    for(int i=0;i<min(n/2,m/2);i++)
-        plusCounter[i]=0;
-        
-    char ** arr;
-    int ** MaxPlusPossibleArr;
-    arr = new char *[n];
-    MaxPlusPossibleArr=new int *[n];
-    for(int i = 0; i <n; i++)
-        arr[i] = new char[m];
-    for(int i = 0; i <n; i++)
-        MaxPlusPossibleArr[i] = new int[m];
+    char arr[n][m];
     for(int i=0;i<n;i++)
     {
-        for(int j=0;j<m;j++)
-        {
+        for( int j=0;j<m;j++)
             cin>>arr[i][j];
-            MaxPlusPossibleArr[i][j]=min(min(min(i,n-i-1),j),m-j-1);
-            cout<<MaxPlusPossibleArr[i][j]<<" ";
-        }
-        cout<<endl;
     }
-    for(int i=min(n/2,m/2);i>=0;i--)
+    cout<<"jdsfasd"<<endl;
+    //Brute-force method 
+    for(int i1=1;i1<n;i1++)
     {
-        //cout<<i<<endl;
-    }
-    
-    
-    //findSquares(0,0,ara,n,m);
-   
-    
-
-   /* 
-    
-    for(int i=0;i<n;i++)
-        minA[i]=0;
-    minA[0]=1;
-    minA[n-1]=1;
-    for(int i=n/2;i<;i++)
-    {
-        if(check(i,minA))
+        for(int j1=1;j1<m;j1++)
         {
-                    
-            for(int j=0;j<m;j++)
-            {
-                if(arr[i][j]=="G")
+            
+       
+                for(int r1=0;r1<=min(i1,min(n-i1-1,min(j1,m-j1-1)));r1++)
                 {
-                    if(check(j,minA))
+                    bool check1=true;
+                    for(int m1=0;m1<=r1;m1++)
                     {
-                        int mini=min(min(min(i,n-i-1),j),m-j-1);
-                        //cout<<"mini "<<mini<<endl;
-                        int left=0,right=0,up=0,down=0;
-                        for(int k=1;k<=mini;k++)
+                        if(arr[i1][j1+m1]=='G'&&arr[i1][j1-m1]=='G'&&arr[i1+m1][j1]=='G'&&arr[i1-m1][j1]=='G')
+                            continue;
+                        else
                         {
-                            //cout<<arr[i][j]<<" "<< arr[i-k][j]<<endl;
-                            if(arr[i][j]==arr[i-k][j])
-                                up++;
-                            else
-                                break;
-                        }
-                        //checking right 
-                        for(int k=1;k<=mini;k++)
-                        {
-                            //cout<<arr[i][j]<<" "<<arr[i+k][j]<<endl;
-                            if(arr[i][j]==arr[i+k][j])
-                                down++;
-                            else 
-                                break;
-                        }
-                        //checking bottom
-                        for(int l=1;l<=mini;l++)
-                        {
-                            //cout<<arr[i][j]<<" "<<arr[i][j+l]<<endl;
-                            if(arr[i][j]==arr[i][j+l])
-                                right++;
-                            else 
-                              break; 
-
-                        }
-                        //cheking up
-                         for(int k=1;k<=mini;k++)
-                        {
-                            //cout<<arr[i][j]<<" "<<arr[i][j-k]<<endl;
-                            if(arr[i][j]==arr[i][j-k])
-                                left++;
-                             else 
-                                 break;
-                        }
-                        int plus=min(up,min(down,min(left,right)));
-                        cout<<i<<" "<<j<<" "<<left<<" "<<right<<" "<<up<<" "<<down<<" "<<plus<<endl;
-                        for(int ss=plus;ss>0;ss--)
-                            if(minA[ss]==0)
-                            {
-                                minA[ss]=1;
-                                minA[n-ss-1]=1;
-                                break;
-                            }
-
-
+                            check1=false;
+                            break;                      
+                        }                    
                     }
-                }
+                    if(check1==true)
+                    {
+                        //cout<<r1<<endl;
+                        for(int m1=0;m1<r1;m++)
+                        {
+                            arr[i1][j1+m1]='B';
+                            arr[i1][j1-m1]='B';
+                            arr[i1-m1][j1]='B';
+                            arr[i1+m1][j1]='B';
+                        }
+                        for(int i2=1;i2<n;i2++)
+                        {
+                            for(int j2=1;j2<m;j2++)
+                            {
+                                for(int r2=0;r2<=min(i2,min(n-i2-1,min(j2,m-j2-1)));r2++)
+                                {
+                                    bool check2=true;
+                                    for(int m2=0;m2<=r2;m2++)
+                                    {
+                                        //cout<<"it came hera"<<endl;
+                                        if(arr[i2][j2+m2]=='G'&&arr[i2][j2-m2]=='G'&&arr[i2+m2][j2]=='G'&&arr[i2-m2][j2]=='G')
+                                            continue;
+                                        else
+                                        {
+                                            check2=false;
+                                            break;                      
+                                        }                    
+                                    }
+                                    if(check2==true)
+                                    {
+                                        if(i1==1&&i1==4)
+                                        cout<<"for "<<i1<<" "<<j1<<" "<<i2<<" "<<j2<<" "<<(r1*4+1)*(r2*4+1)<<endl;;
+                                    }
+                                }
+                            }                           
+                        }
 
+
+                        for(int m1=0;m1<r1;m++)
+                        {
+                            arr[i1][j1+m1]='G';
+                            arr[i1][j1-m1]='G';
+                            arr[i1-m1][j1]='G';
+                            arr[i1+m1][j1]='G';
+                        }
+                    }
+                
             }
         }
-        
-    }*/
-    return 0;
+    }
 }
