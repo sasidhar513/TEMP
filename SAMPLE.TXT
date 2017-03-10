@@ -1,41 +1,88 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
+#include<iostream>
+#include<string>
+#include<time.h>
 using namespace std;
-
-
-void getTopRight(int size,int i,int j,int &tlx,int &tly)
+void dummy()
 {
-    int minimum =min(i,size-1-j);
-    tlx=i-minimum;
-    tly=j+minimum;
+    for(int i=0;i<1100000;i++)
+        cout<<"";
 }
-void calculateInitialDistaces(int n,int qx,int qy,int &ld ,int &rd, int &td, int &bd, int &trd,int &tld ,int &bld,int &brd)
+void naiveStringMatching(string t ,string p)
 {
-    //calulating left
-    ld=qy;
-    rd=n-1-qy;
-    td=qx;
-    bd=n-1-qx;
-    trd=min(qx,n-1-qy);
-    tld=min()
-
-}
-
-
-int main() 
-{
-    int n,m,qx,qy,x,y;
-    cin>>n>>m>>qx>>qy;
-    int ld,rd,td,bd,trd,tld,bld,brd;
-    calculateInitialDistances(ld,rd,td,bd,trd,tld,bld,brd);
-
-    while(~scanf("%d%d",&x,&y))
+    //cout<<"im calleed"<<endl;
+    int n=t.length();
+    int m=p.length();
+    for(int i=0;i<n;i++)
     {
-
+        bool yes=true;
+        for(int j=0;j<m;j++)
+        {
+            
+            if(t[i+j]!=p[j])
+            {
+                yes=false;
+                break;
+            }
+        }
+        if(yes)
+            cout<<"pattern found at "<<i<<endl;
     }
-    getLeft(n,x,y);
+}
+void improvedNaiveStringMatching(string t,string p)
+{
+    int n=t.length();
+    int m=p.length();
+    int check[m];
+    for(int i=0;i<m;i++)
+        check[i]=0;
+    bool unique=true;
+    for(int i=0;i<m;i++)
+    {
+        check[t[i]]++;
+        if(check[t[i]]>1)
+        {
+            unique=false;
+            break;
+        }            
+    }
+    if(!unique)
+    {
+        naiveStringMatching(t,p);
+        return;
+    }
+    int j=0,i=0;
+   while(true)
+   {
+        
+        if(t[i]==t[j])
+        {
+            j++;
+            
+        }
+        if(j==m)
+            cout<<"pattern found at "<< i-j<<endl;
+        else
+        {
+            j=0;
+        }
+         i++;
+    }
+    
+    
+}
 
+int main()
+{
+    string t,p;
+    cin>>t>>p;
+    cout<<"";
+   
+     clock_lock();
+    improvedNaiveStringMatching(t,p);
+  cout<<clock()-s1;
+      s1=clock();
+    naiveStringMatching(t,p);
+  cout<<clock()-s1;
+   
+    
 }
