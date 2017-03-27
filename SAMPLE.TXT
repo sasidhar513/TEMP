@@ -1,88 +1,48 @@
-#include<iostream>
-#include<string>
-#include<time.h>
+#include<bits/stdc++.h>
+#define ALPHABET 256
 using namespace std;
-void dummy()
-{
-    for(int i=0;i<1100000;i++)
-        cout<<"";
-}
-void naiveStringMatching(string t ,string p)
-{
-    //cout<<"im calleed"<<endl;
-    int n=t.length();
-    int m=p.length();
-    for(int i=0;i<n;i++)
-    {
-        bool yes=true;
-        for(int j=0;j<m;j++)
-        {
-            
-            if(t[i+j]!=p[j])
-            {
-                yes=false;
-                break;
-            }
-        }
-        if(yes)
-            cout<<"pattern found at "<<i<<endl;
-    }
-}
-void improvedNaiveStringMatching(string t,string p)
-{
-    int n=t.length();
-    int m=p.length();
-    int check[m];
-    for(int i=0;i<m;i++)
-        check[i]=0;
-    bool unique=true;
-    for(int i=0;i<m;i++)
-    {
-        check[t[i]]++;
-        if(check[t[i]]>1)
-        {
-            unique=false;
-            break;
-        }            
-    }
-    if(!unique)
-    {
-        naiveStringMatching(t,p);
-        return;
-    }
-    int j=0,i=0;
-   while(true)
-   {
-        
-        if(t[i]==t[j])
-        {
-            j++;
-            
-        }
-        if(j==m)
-            cout<<"pattern found at "<< i-j<<endl;
-        else
-        {
-            j=0;
-        }
-         i++;
-    }
-    
-    
-}
 
-int main()
+struct TrieNode{
+    TrieNode * nextNode[ALPHABET];
+    bool isLeaf;
+};
+class Trie
 {
-    string t,p;
-    cin>>t>>p;
-    cout<<"";
-   
-     clock_lock();
-    improvedNaiveStringMatching(t,p);
-  cout<<clock()-s1;
-      s1=clock();
-    naiveStringMatching(t,p);
-  cout<<clock()-s1;
-   
-    
+    TrieNode * rootNode;
+    public:
+    Trie();
+    TrieNode * createTrieNode();
+    void  insertKey(string s);
+    bool searchKey(string s);   
+};
+Trie::Trie(){
+    rootNode= createTrieNode();
+}
+TrieNode * Trie::createTrieNode(){
+    TrieNode * node;
+    for(int i=0;i<ALPHABET;i++)
+    {
+        node->nextNode[i]=NULL;
+    }
+    node->isLeaf=false;
+    return node;
+}
+void  Trie::insertKey(string s){
+    TrieNode * root =rootNode;
+    for(int i=0;i<s.length();i++)
+    {
+            if(root->nextNode[s[0]]==NULL)
+            {
+                root->nextNode[s[i]]=createTrieNode();
+            }
+            else 
+                root=root->nextNode[s[i]];
+    }
+}
+bool Trie::searchKey(string s){
+    TrieNode * root =rootNode;
+    else
+}
+int main(){
+    return 0;
 }
