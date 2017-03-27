@@ -1,53 +1,49 @@
 
+
 #include<bits/stdc++.h>
 #define ALPHABET 256
 using namespace std;
 
 struct TrieNode{
-    TrieNode  *nextNode;
+    TrieNode  *nextNode[ALPHABET];
     bool isLeaf;
-    TrieNode(){
-        nextNode=new TrieNode[ALPHABET];
-    }
+
 };
 class Trie
 {
-    TrieNode * rootNode;
+    TrieNode * rootNode=NULL;
     public:
-        TrieNode * createTrieNode();
+    TrieNode * createTrieNode();
 
     Trie();
     void  insertKey(string s);
     bool searchKey(string s);   
+    bool deleteKey(string s);   
+
 };
 Trie::Trie(){
     rootNode= createTrieNode();
 }
 TrieNode * Trie::createTrieNode(){
-    TrieNode * node;
+    TrieNode * node=NULL;
+    node =new TrieNode();
     for(int i=0;i<ALPHABET;i++)
-    {
-        cout<<"hidia'"<<endl;
         node->nextNode[i]=NULL;
-                cout<<"hidia'"<<endl;
-
-    }
     node->isLeaf=false;
     return node;
 }
 void  Trie::insertKey(string s){
     TrieNode * root =rootNode;
-    if(root->nextNode)
-     cout<<"imd caaled"<<endl;
-    for(int i=0;i<s.length();i++)
+    int i;
+
+    for( i=0;i<s.length();i++)
     {
-            if(root->nextNode[s[i]]==NULL)
-            {
-                root->nextNode[s[i]]=createTrieNode();
-            }
-            else 
-                root=root->nextNode[s[i]];
-    }
+        if(root->nextNode[s[i]]==NULL)
+            root->nextNode[s[i]]=createTrieNode();
+        root=root->nextNode[s[i]];
+    } 
+    root->isLeaf=true;
+
 }
 bool Trie::searchKey(string s){
     TrieNode * root =rootNode;
@@ -56,25 +52,90 @@ bool Trie::searchKey(string s){
             return false;
         root=root->nextNode[s[i]];
     }
-    return true;
+    if(root->isLeaf)
+        return true;
+    else 
+        return false;
+}
+bool Trie::deleteKey(string s){
+    if(searchKey(s)){
+        TrieNode * root= rootNode;
+        int checker=0;
+        for(int j=0;j<s.length();j++)
+        {
+            bool checked= false;                        
+            for(int i=0;i<ALPHABET;i++)
+            {
+                if(i!=s[j]&&root->nextNode[i]!=NULL)
+                {
+                    checked=true;
+                    break;                    
+                }
+            }
+            if(checked)
+                checker=j;  
+            root=root->nextNode[s[j]];
+            cout<<checker<<endl;
+        }
+        root= rootNode;
+        for(int i=0;i<checker;i++)
+            root=root->nextNode[s[i]];
+        root->nextNode[s[checker]]=NULL;
+        return true;
+    }
+    else 
+        return false;
+
 }
 int main(){
     Trie trie;
     int n,m;
     cin>>n>>m;
+    int g[26][100];
+    for(int i=0;i<26;i++)
+        for(int j=0;j<100;j++)
+            g[i][j]=-1;
+        int states=1;
     for(int i=0;i< n;i++)
     {
-        cout<<"sfd"<<endl;
         string ss;
         cin>>ss;
-        trie.insertKey(ss);
+    
+   
+        int currentState = 0;
+ 
+        for (int j = 0; j < ss.size(); ++j)
+        {
+            int ch = ss[j] - 'a';
+ 
+            // Allocate a new node (create a new state) if a
+            // node for ch doesn't exist.
+            if (g[currentState][ch] == -1)
+                g[currentState][ch] = states++;
+ 
+            currentState = g[currentState][ch];
+        }
+ 
+        // Add current word in output function
+       // out[currentState] |= (1 << i);
+    
+        
+    }
+    for(int i=0;i<26;i++)
+    {
+        for(int j=0;j<26;j++)
+            cout<<g[i][j]<<" ";
+        cout<<endl;
     }
     for(int i=0;i<m;i++)
     {
-                cout<<"sqfd"<<endl;
-
         string ss;
-        cout<<trie.searchKey(ss);
+        cin>>ss;
+
+        cout<<trie.deleteKey(ss)<<endl;
+                cout<<trie.searchKey("sasdharstm");
+
+
     }
     return 0;
 }
