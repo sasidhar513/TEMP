@@ -1,17 +1,22 @@
+
 #include<bits/stdc++.h>
 #define ALPHABET 256
 using namespace std;
 
 struct TrieNode{
-    TrieNode * nextNode[ALPHABET];
+    TrieNode  *nextNode;
     bool isLeaf;
+    TrieNode(){
+        nextNode=new TrieNode[ALPHABET];
+    }
 };
 class Trie
 {
     TrieNode * rootNode;
     public:
+        TrieNode * createTrieNode();
+
     Trie();
-    TrieNode * createTrieNode();
     void  insertKey(string s);
     bool searchKey(string s);   
 };
@@ -22,16 +27,21 @@ TrieNode * Trie::createTrieNode(){
     TrieNode * node;
     for(int i=0;i<ALPHABET;i++)
     {
+        cout<<"hidia'"<<endl;
         node->nextNode[i]=NULL;
+                cout<<"hidia'"<<endl;
+
     }
     node->isLeaf=false;
     return node;
 }
 void  Trie::insertKey(string s){
     TrieNode * root =rootNode;
+    if(root->nextNode)
+     cout<<"imd caaled"<<endl;
     for(int i=0;i<s.length();i++)
     {
-            if(root->nextNode[s[0]]==NULL)
+            if(root->nextNode[s[i]]==NULL)
             {
                 root->nextNode[s[i]]=createTrieNode();
             }
@@ -41,8 +51,30 @@ void  Trie::insertKey(string s){
 }
 bool Trie::searchKey(string s){
     TrieNode * root =rootNode;
-    else
+    for(int i=0;i<s.length();i++){
+        if(root->nextNode[s[i]]==NULL)
+            return false;
+        root=root->nextNode[s[i]];
+    }
+    return true;
 }
 int main(){
+    Trie trie;
+    int n,m;
+    cin>>n>>m;
+    for(int i=0;i< n;i++)
+    {
+        cout<<"sfd"<<endl;
+        string ss;
+        cin>>ss;
+        trie.insertKey(ss);
+    }
+    for(int i=0;i<m;i++)
+    {
+                cout<<"sqfd"<<endl;
+
+        string ss;
+        cout<<trie.searchKey(ss);
+    }
     return 0;
 }
