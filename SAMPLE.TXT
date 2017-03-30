@@ -46,7 +46,7 @@ int main(){
                 rem[i]=rem[i+1]+1;
             else
                 rem[i]=rem[i+1];
-
+    bool is =true;
     for(int i1=0;i1<number.length()/2;i1++)
     {
         //if the digit at that position is 9 and both are equal we wont do anything
@@ -68,15 +68,18 @@ int main(){
              number=number.substr(0,i1)+change+number.substr(i1+1,number.length()-1-1-i1-        i1)+change+number.substr(number.length()-i1,number.length());
          k=k-1;
         }
-        if(arr[i1]==0&&k-1<rem[i1]) 
+        else if(arr[i1]==0&&k-1<rem[i1]) 
         {
             is=false;
             break;
         }
             
-            
-        cout<<number<<endl;
+        cout<<number<<" "<<k<<endl;
        
     }
+    if(is)
+        cout<<number;
+    else
+        cout<<"Not possible";
     return 0;
 }
