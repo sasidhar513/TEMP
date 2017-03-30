@@ -1,3 +1,4 @@
+
 #include <map>
 #include <set>
 #include <list>
@@ -45,16 +46,36 @@ int main(){
                 rem[i]=rem[i+1]+1;
             else
                 rem[i]=rem[i+1];
-        cout<<"HII"<<number<<endl;
 
     for(int i1=0;i1<number.length()/2;i1++)
     {
-        cout<<"hii"<<endl;
+        //if the digit at that position is 9 and both are equal we wont do anything
         if(arr[i1]==1&&number[i1]==9)
             continue;
-        else if(arr[i1]==1&&k-2>=rem[i1])
-            number=number.substr(0,i1)+"9"+number.substr(i1+1,number.length()-1-i1)+"9"+number.substr(number.length()-i1,number.length());
-        cout<<number;
+        //if digits are same and we have plenty of moves we can convert them to 9
+        else if(/*arr[i1]==1&&*/k-2>=rem[i1])
+        {
+            number=number.substr(0,i1)+"9"+number.substr(i1+1,number.length()-1-1-i1-        i1)+"9"+number.substr(number.length()-i1,number.length());
+            k-=2;
+        }
+        else if (arr[i1]==0&&k-1>=rem[i1])
+        {   char change;         
+            if(number[i1]>number[number.length()-1-i1])
+                change=number[i1];
+            else
+                change=number[number.length()-1-i1];
+         cout<<change<<endl;
+             number=number.substr(0,i1)+change+number.substr(i1+1,number.length()-1-1-i1-        i1)+change+number.substr(number.length()-i1,number.length());
+         k=k-1;
+        }
+        if(arr[i1]==0&&k-1<rem[i1]) 
+        {
+            is=false;
+            break;
+        }
+            
+            
+        cout<<number<<endl;
        
     }
     return 0;
